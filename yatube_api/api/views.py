@@ -16,6 +16,10 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated, AuthorPermission]
+    # Проверка аутентификации по умолчанию в DEFAULT_PERMISSION_CLASSES
+    # ограничивает только доступ к просмотру списка постов,
+    # дополнительная проверкой аутентификации(на основе модели) пользователя
+    # разрешает манипуляции с постами. Да и 4 теста падают без неё :)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
